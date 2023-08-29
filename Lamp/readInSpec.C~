@@ -1,0 +1,86 @@
+#include <TH1D.h>
+#include <TFile.h>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <sstream>
+
+int readInSpec() {
+  const int maxFileNumber = 5;  // Change this to the number of files you have
+
+  
+  // Number of bins
+  const double xMin = 175.56;     // Minimum x value
+  const double xMax = 1100.53;     // Maximum x value
+  double binSize = 0.57;
+  double NBinsCalc = (xMax-xMin)/binSize;
+  const int nBins = NBinsCalc;   // Number of bins
+  
+  // Loop over file numbers
+  std::cout<<"Looping over files"<<std::endl;
+  for (int fileNumber = 1; fileNumber <= maxFileNumber; ++fileNumber) {
+    // Generate the file name
+    std::string fileName = std::to_string(fileNumber) + "Channel.txt";
+
+
+    std::cout<<"Opening file " << fileNumber<<std::endl;
+    // Open the file
+    std::ifstream file(fileName);
+    if (!file.is_open()) {
+      std::cerr << "Could not open file: " << fileName << std::endl;
+      continue;
+    }
+    
+    // Read the header
+    std::string header;
+    std::getline(file, header);
+    
+    // Parse header to get values
+    std::vector<std::string> headerValues;
+    std::string value;
+    std::istringstream headerStream(header);
+    while (std::getline(headerStream, value, ';')) {
+      headerValues.push_back(value);
+    }
+    
+    // Create a histogram
+    TH1D* histogram = new TH1D(("hist_" + std::to_string(fileNumber)).c_str(), ("Histogram " + std::to_string(fileNumber) + " - " + headerValues[4]).c_str(), nBins, xMin, xMax);
+    
+    // Skip the units line
+    std::string unitsLine;
+    std::getline(file, unitsLine);
+    
+    // Read and store data
+    double wavelength, sampleCount, darkCount, referenceCount, scopeCorrected;
+    char delimiter;
+    std::string line;
+    while (std::getline(file, line)) {
+      std::istringstream iss(line);
+      if (iss >> wavelength >> delimiter >> sampleCount >> delimiter >> darkCount >> delimiter >> referenceCount >> delimiter >> scopeCorrected) {
+	histogram->Fill(wavelength, scopeCorrected);
+      }
+
+      
+    }
+    
+    // Close the file
+    file.close();
+    
+    // Save the histogram and header values to a ROOT file
+    std::cout<<"File "<< fileName <<" processed" <<std::endl;
+    TFile output("output.root", "UPDATE");
+    if (!output.IsZombie()) {
+      histogram->Write();
+      output.Close();
+      delete histogram;
+    } else {
+      std::cerr << "Could not open output file." << std::endl;
+    }
+  }
+  
+  return 0;
+}
+
+
+
+

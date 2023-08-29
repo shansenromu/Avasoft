@@ -1,0 +1,58 @@
+/var/spool/slurmd/job40088689/slurm_script: line 15: soruce: command not found
+
+ *** Break *** segmentation violation
+
+
+
+===========================================================
+There was a crash.
+This is the entire stack trace of all threads:
+===========================================================
+#0  0x00002ae903b9b7a6 in __GI___waitpid (pid=248832, stat_loc=stat_loc
+entry=0x7fffed4ba0e8, options=options
+entry=0) at ../sysdeps/unix/sysv/linux/waitpid.c:30
+#1  0x00002ae903b19777 in do_system (line=<optimized out>) at ../sysdeps/posix/system.c:167
+#2  0x00002ae9034d6a25 in TUnixSystem::StackTrace() () from /cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Compiler/gcc9/root/6.20.04/bin/../lib/libCore.so
+#3  0x00002ae9034d37ac in TUnixSystem::DispatchSignals(ESignals) () from /cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Compiler/gcc9/root/6.20.04/bin/../lib/libCore.so
+#4  <signal handler called>
+#5  __memmove_avx_unaligned_erms () at ../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:365
+#6  0x00002ae903822a34 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) () from /cvmfs/soft.computecanada.ca/gentoo/2020/usr/lib/gcc/x86_64-pc-linux-gnu/11.3.0/libstdc++.so.6
+#7  0x00002ae903824333 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) () from /cvmfs/soft.computecanada.ca/gentoo/2020/usr/lib/gcc/x86_64-pc-linux-gnu/11.3.0/libstdc++.so.6
+#8  0x00002ae904eb4ea7 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) () from /cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Compiler/gcc9/root/6.20.04/lib/libCling.so
+#9  0x00002ae90367d537 in ?? ()
+#10 0x00002ae9036dd138 in ?? () from /cvmfs/soft.computecanada.ca/gentoo/2020/usr/lib/gcc/x86_64-pc-linux-gnu/11.3.0/libstdc++.so.6
+#11 0x00002ae9036b8fa0 in ?? () from /cvmfs/soft.computecanada.ca/gentoo/2020/usr/lib/gcc/x86_64-pc-linux-gnu/11.3.0/libstdc++.so.6
+#12 0x00000000034415d0 in ?? ()
+#13 0x000000004d9330fe in ?? ()
+#14 0x0000000001364cc3 in ?? ()
+#15 0x00007fffed4bd294 in ?? ()
+#16 0x00000000016844c0 in ?? ()
+#17 0x00007fffed4bd360 in ?? ()
+#18 0x0000000000000000 in ?? ()
+===========================================================
+
+
+The lines below might hint at the cause of the crash.
+You may get help by asking at the ROOT forum http://root.cern.ch/forum
+Only if you are really convinced it is a bug in ROOT then please submit a
+report at http://root.cern.ch/bugs Please post the ENTIRE stack trace
+from above as an attachment in addition to anything else
+that might help us fixing this issue.
+===========================================================
+#5  __memmove_avx_unaligned_erms () at ../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:365
+#6  0x00002ae903822a34 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_mutate(unsigned long, unsigned long, char const*, unsigned long) () from /cvmfs/soft.computecanada.ca/gentoo/2020/usr/lib/gcc/x86_64-pc-linux-gnu/11.3.0/libstdc++.so.6
+#7  0x00002ae903824333 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_append(char const*, unsigned long) () from /cvmfs/soft.computecanada.ca/gentoo/2020/usr/lib/gcc/x86_64-pc-linux-gnu/11.3.0/libstdc++.so.6
+#8  0x00002ae904eb4ea7 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) () from /cvmfs/soft.computecanada.ca/easybuild/software/2020/avx512/Compiler/gcc9/root/6.20.04/lib/libCling.so
+#9  0x00002ae90367d537 in ?? ()
+#10 0x00002ae9036dd138 in ?? () from /cvmfs/soft.computecanada.ca/gentoo/2020/usr/lib/gcc/x86_64-pc-linux-gnu/11.3.0/libstdc++.so.6
+#11 0x00002ae9036b8fa0 in ?? () from /cvmfs/soft.computecanada.ca/gentoo/2020/usr/lib/gcc/x86_64-pc-linux-gnu/11.3.0/libstdc++.so.6
+#12 0x00000000034415d0 in ?? ()
+#13 0x000000004d9330fe in ?? ()
+#14 0x0000000001364cc3 in ?? ()
+#15 0x00007fffed4bd294 in ?? ()
+#16 0x00000000016844c0 in ?? ()
+#17 0x00007fffed4bd360 in ?? ()
+#18 0x0000000000000000 in ?? ()
+===========================================================
+
+
