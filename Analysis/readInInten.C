@@ -7,7 +7,7 @@
 #include <cmath> // Include the cmath library for mathematical operations
 
 int readInInten() {
-    const int maxFileNumber = 17;  // Change this to the number of files you have
+    const int maxFileNumber = 59;  // Change this to the number of files you have
 
     // Number of bins
     const double xMin = 175.56; // Minimum x value
@@ -18,12 +18,12 @@ int readInInten() {
 
     // Loop over file numbers
     std::cout << "Looping over files" << std::endl;
-    for (int fileNumber = 0; fileNumber < maxFileNumber; ++fileNumber) {
+    for (int fileNumber = 1; fileNumber < maxFileNumber; ++fileNumber) {
         // Generate the file name
-        std::string fileName = "Inten_360nmDG_3160umS_dial_";
-	int  dialNumbs = 50+50*fileNumber;
+        std::string fileName;
+	//int  dialNumbs = 50+20*fileNumber;
 	std::string fileNumbStr = std::to_string(fileNumber) ;
-	fileName=fileName+std::to_string(dialNumbs)+"_"+fileNumbStr  +".txt";
+	fileName=fileNumbStr  +".txt";
         std::cout << "Opening file " << fileNumber << std::endl;
         // Open the file
         std::ifstream file(fileName);
@@ -104,7 +104,7 @@ int readInInten() {
                 histogram1->SetBinError(binX1, absoluteIrradianceError);
 		histogram1->GetXaxis()->SetTitle("Wavelength (nm)");
 		histogram1->GetYaxis()->SetTitle("Absolute Irradiance (#mu Watt/cm^2/nm)");
-		histogram1->GetYaxis()->SetRangeUser(-120,120);
+		histogram1->GetYaxis()->SetRangeUser(-120,12000);
 		histogram1->SetStats(kFALSE);
 		
 		double photonCountError = 0.1; // Modify this value using error propogation
@@ -114,17 +114,17 @@ int readInInten() {
                 histogram2->SetBinError(binX2, photonCountError);
 		histogram2->GetXaxis()->SetTitle("Wavelength (nm)");
 		histogram2->GetYaxis()->SetTitle("Photon Counts (#mu mol/s/m^2/nm)");
-		histogram2->GetYaxis()->SetRangeUser(-10,10);
+		histogram2->GetYaxis()->SetRangeUser(-10,1000);
 		histogram2->SetStats(kFALSE);
 		
 		double scopeCountError = 0.1; // Modify this value using error propogation
                 // Fill the histogram and set the bin error
                 int binX3 = histogram3->GetXaxis()->FindBin(wavelength);
-                histogram3->Fill(wavelength, sampleCount-darkCount);
+                histogram3->Fill(wavelength, sampleCount);
                 histogram3->SetBinError(binX3, scopeCountError);
 		histogram3->GetXaxis()->SetTitle("Wavelength (nm)");
-		histogram3->GetYaxis()->SetTitle("Sample-Dark (counts)");
-		histogram3->GetYaxis()->SetRangeUser(-200,600);
+		histogram3->GetYaxis()->SetTitle("Sample (counts)");
+		histogram3->GetYaxis()->SetRangeUser(-2000,200000);
 		histogram3->SetStats(kFALSE);
 		
             }
