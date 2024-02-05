@@ -21,15 +21,18 @@ void FitGaussianInRange(TH1D* histogram, double xMin, double xMax, int j, int Ht
     Chi2num = -1;
   }
   double ndf_num= fitFunction->GetNDF();
-
-  xStart2 = mean-sigma*2.;
-  xEnd2 = mean+sigma*2.;
-  xStart3 = mean-sigma*3.;
-  xEnd3 = mean+sigma*3.;
-  xStart4 = mean-sigma*4.;
-  xEnd4 = mean+sigma*4.;
-  xStart5 = mean-sigma*5.;
-  xEnd5 = mean+sigma*5.;
+  Double_t xStart2, xStart3, xStart4, xStart5,xStart;
+  Double_t xEnd2, xEnd3, xEnd4, xEnd5, xEnd;
+  xStart2 = peakPosition-3.;
+  xEnd2 = peakPosition+3;
+  xStart3 = peakPosition-5.;
+  xEnd3 = peakPosition+5.;
+  xStart4 = peakPosition-7;
+  xEnd4 = peakPosition+7.;
+  xStart5 = peakPosition-9.;
+  xEnd5 = peakPosition+9.;
+  xStart=peakPosition-15;
+  xEnd=peakPosition+15;
   // Find the corresponding bin numbers for the start and end x values
   Int_t binStart2 = histogram->GetXaxis()->FindBin(xStart2);
   Int_t binEnd2 = histogram->GetXaxis()->FindBin(xEnd2);
@@ -39,15 +42,17 @@ void FitGaussianInRange(TH1D* histogram, double xMin, double xMax, int j, int Ht
   Int_t binEnd4 = histogram->GetXaxis()->FindBin(xEnd4);
   Int_t binStart5 = histogram->GetXaxis()->FindBin(xStart5);
   Int_t binEnd5 = histogram->GetXaxis()->FindBin(xEnd5);
+  Int_t binStart = histogram->GetXaxis()->FindBin(200); // Full bin intgral start
+  Int_t binEnd = histogram->GetXaxis()->FindBin(900);   // Full bin integral end
   // Calculate the integral over the specified bin range
   Double_t integral2 = histogram->Integral(binStart2, binEnd2);
   Double_t integral3 = histogram->Integral(binStart3, binEnd3);
   Double_t integral4 = histogram->Integral(binStart4, binEnd4);
   Double_t integral5 = histogram->Integral(binStart5, binEnd5);
-  
+  Double_t integral = histogram->Integral(binStart, binEnd); // Full histogram integral
   // You can print or use the fit parameters as needed
-  std::cout<< j<<", "<<Htype <<", "<< mean <<", "<<amplitude <<", " << sigma <<","<< Chi2num <<", "<< ndf_num <<
-    integral2<< integral3<<integral4<<integral5<<peakPosition<<std::endl;
+  std::cout<< j<<", "<<Htype <<", "<< mean <<", "<<amplitude <<", " << sigma <<","<< Chi2num <<", "<< ndf_num <<", "
+	   <<integral2<<", "<< integral3<<", "<<integral4<<", "<<integral5<<", "<<integral<<", "<<peakPosition<<std::endl;
   delete fitFunction;
 }
 
@@ -62,7 +67,7 @@ void FitGaussianWithBackground(TH1D *histogram, Double_t peakPosition) {
     
     // Create a fitting function that is a guassian with a sloped background
     TF1 *fitFunction = new TF1("fitFunction", "[0]*exp(-0.5*((x-[1])/[2])**2) + [3]*x + [4]", 
-                               peakPosition - 10, peakPosition + 10);
+                               peakPosition - 50, peakPosition + 50);
     fitFunction->SetParameters(initialAmplitude, initialMean, initialSigma, initialBackground);
 
     //gStyle->SetOptStat(1111);
@@ -115,7 +120,9 @@ void FitGaussianWithBackground(TH1D *histogram, Double_t peakPosition) {
     delete fitFunction;
 }
 
-int FitIntensitySpec() {
+
+/// treat this as a main sort of
+int FitIntensitySpec(double interval=50, double startWavelength=50, double mSlope= 0.58895) {
     TFile *file = TFile::Open("output.root");
 
     int th1dCount = 0;
@@ -162,17 +169,18 @@ int FitIntensitySpec() {
       
       Double_t PeakPosition,MinWavelength,MaxWavelength;
 
-      Double_t  interval=10;
+      //Double_t  interval=50;
 
       
       //Double_t mSlope = 1.008571429; // For 300 nm Diffraction Grating
-      Double_t mSlope = 0.58895 ;// For 275 nm Diffraction Grating
-      Double_t mSlope_new = 0.527 ;// For 275 nm Diffraction Grating
-      
-      Double_t startWavelength = 195.11;
+      //Double_t mSlope = 0.58895 ;// For 275 nm Diffraction Grating
+      //Double_t mSlope2 = 0.5293;
+
+      //Double_t startWavelength= 70.02;
+ 
 
    
-      PeakPosition = startWavelength+(j*interval)*mSlope_new;
+      PeakPosition = startWavelength+(j*interval)*mSlope;
       
       MinWavelength = PeakPosition - 30;
       MaxWavelength = PeakPosition +30;

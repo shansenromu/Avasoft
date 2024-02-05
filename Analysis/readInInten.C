@@ -7,7 +7,7 @@
 #include <cmath> // Include the cmath library for mathematical operations
 
 int readInInten() {
-    const int maxFileNumber = 59;  // Change this to the number of files you have
+    const int maxFileNumber = 15;  // Change this to the number of files you have
 
     // Number of bins
     const double xMin = 175.56; // Minimum x value
@@ -18,13 +18,18 @@ int readInInten() {
 
     // Loop over file numbers
     std::cout << "Looping over files" << std::endl;
-    for (int fileNumber = 1; fileNumber < maxFileNumber; ++fileNumber) {
+    for (int fileNumber = 0; fileNumber < maxFileNumber; ++fileNumber) {
         // Generate the file name
         std::string fileName;
-	//int  dialNumbs = 50+20*fileNumber;
-	std::string fileNumbStr = std::to_string(fileNumber) ;
-	fileName=fileNumbStr  +".txt";
-        std::cout << "Opening file " << fileNumber << std::endl;
+	int  dialNumbs = 150+50*fileNumber;
+	//std::string fileNumbStr = std::to_string(fileNumber) ;
+
+
+	//*_*_*_*  CHANGE THIS TO PICK UP FILES PATTERNS  *_*_*_*_*
+	fileName="up2-"+std::to_string(dialNumbs) +".txt";
+
+
+	std::cout << "Opening file " << fileNumber << std::endl;
         // Open the file
         std::ifstream file(fileName);
         if (!file.is_open()) {
